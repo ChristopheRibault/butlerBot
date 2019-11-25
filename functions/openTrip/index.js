@@ -2,7 +2,7 @@ const axios = require('axios').create({
   baseURL: 'https://opentripmap-places-v1.p.rapidapi.com/en',
   timeout: 1000,
   headers: {
-    "x-rapidapi-key": process.env.APPID || '5c2fc28282msh16bc4793db464a0p195cf8jsn0a31ca5e5b20',
+    "x-rapidapi-key": process.env.APPID,
   }
 });
 
