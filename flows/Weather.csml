@@ -1,0 +1,35 @@
+start:
+		say "For which city would you like to know the weather ? 🌏"
+		hold
+		use Object(query = "{{event}}") as data
+		use Fn("weather", data = data) as w
+		if (w.code == "200") {
+			say "Weather forecast for {{w.city}}...."
+			say Image("https://media.giphy.com/media/mvnRT0hQ8nUvm/giphy.gif")
+			foreach (e, i) in w.weather {
+				say "On {{e.date}}:"
+				say "{{e.descr}}"
+				say Image("http://{{e.icon}}")
+				say "{{e.temp}}°C"
+			}
+		}
+		else {
+			say "I'm sorry I didn't find this city"
+		}
+	use Button("Thank you very much !") as thanks
+	use Button("An other information") as information
+	say Question(
+	title = "How can I help you now ? 💁🏼‍♀️",
+	buttons = [thanks, information]
+  )
+	hold
+	if(event match thanks) {
+		say "Good bye ! See you later !"
+		say Image("https://media.giphy.com/media/UrcXN0zTfzTPi/giphy.gif")
+		goto end
+	}
+	if(event match information) {
+		goto flow Redefault
+	}
+	goto end
+  

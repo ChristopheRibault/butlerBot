@@ -1,0 +1,68 @@
+start:
+	say "Great ! Are you ready for the adventure ?"
+	say Image("https://media.giphy.com/media/VGG8UY1nEl66Y/giphy.gif")
+	say "In which city are you looking to find a museum ?"
+	hold
+	use Fn("openTrip", action = "getCityCoord", query = event) as coord
+	use Fn("openTrip", action = "getAttractionList", kind = "art_galleries,history_museums,local_museums", radius = "1000", lat = "{{coord.lat}}", lon = "{{coord.lon}}" ) as rb
+	if (Length(rb.features) == 0) {
+		say "Sorry... I can't offer you anything"
+		use Button("Thank you very much !") as thanks
+		use Button("An other information") as information
+		say Question(
+			title = "How can I help you now ? 💁🏼‍♀️",
+			buttons = [thanks, information]
+  	)
+			if(event match thanks) {
+			say "Good bye ! See you later !"
+			say Image("https://media.giphy.com/media/UrcXN0zTfzTPi/giphy.gif")
+			goto end
+		}
+		if(event match information) {
+			goto flow Default
+		}
+		goto end
+	}
+
+	say Image ("https://media.giphy.com/media/4GXUa4U05Q0JAM972c/giphy.gif")
+	say "Here are our top museums that we found espacially for you 🤩"
+
+	use [] as array
+	foreach (e, i) in rb.features {
+		if (i < 5) {
+			use Fn("openTrip", action = "getAttractionDetails", xid = "{{e.properties.xid}}") as det
+			use Fn("utils", action="push", array = array, element = det) as array
+		}
+	}
+
+	foreach (e, i) in array {
+		say Button("{{e.name}}")
+	}
+	hold
+
+	foreach (e, i) in array {
+		if (event match "{{e.name}}") {
+			say Image("{{e.preview.source}}")
+			say "{{e.wikipedia_extracts.text}}"
+			use Fn("utils", action="split", string = "{{e.url}}", separator = ";") as links
+			say Url("{{links[0]}}")
+		}
+	}
+
+	use Button("Thank you very much !") as thanks
+	use Button("An other information") as information
+	say Question(
+		title = "How can I help you now ? 💁🏼‍♀️",
+		buttons = [thanks, information]
+  )
+	hold
+	if(event match thanks) {
+		say "Good bye ! See you later !"
+		say Image("https://media.giphy.com/media/UrcXN0zTfzTPi/giphy.gif")
+		goto end
+	}
+	if(event match information) {
+		goto flow Redefault
+	}
+	goto end
+  

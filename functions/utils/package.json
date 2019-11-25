@@ -1,0 +1,12 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "zip": "zip -r ../utils.zip . -q"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

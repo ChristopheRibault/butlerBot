@@ -1,0 +1,23 @@
+start:
+	say "Hello {{_metadata.firstname}} 🖐🏼"
+	say Image("https://media.giphy.com/media/3oKIPsx2VAYAgEHC12/giphy.gif")
+	use Button("Get weather") as weather
+	use Button("Find a restaurant") as restaurant
+	use Button("Find a museum") as museum
+	say Question(
+		title = "I'm Botguide, your bot to find you the best places to visit ! What can I do for you ?",
+		buttons = [weather, restaurant, museum]
+  )
+	hold
+	if(event match weather) {
+		goto flow Weather
+	}
+	if(event match restaurant) {
+		goto flow Restaurant
+	}
+	if(event match museum) {
+		goto flow Museum
+	}
+	hold
+	goto end
+	
